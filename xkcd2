@@ -1,0 +1,11 @@
+START: 2048
+SYMBOLS:
+#         Name            Section         Offset          Length          Visibility
+0         .text           .text           2048            14              LOCAL
+1         funkcija        .text           2048            0               GLOBAL
+RELTAB:
+Name            Section         Offset          TYPE      
+funkcija        .text           2058            ABS2      
+CODE:
+.text
+c1 00 01 00 c5 20 01 00 6c 07 00 00 e9 e7 

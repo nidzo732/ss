@@ -1,0 +1,243 @@
+.global main
+.global START
+.global exit
+.global current_time
+.global printstr
+.global getchar
+.global getstr
+.global getint
+.global printint
+.global println
+.rodata
+.word 0
+.word timer
+.word badinst
+.word kbd
+.word 0
+.word 0
+.word 0
+.word 0
+.word 0
+.word 0
+.word 0
+.word 0
+.word 0
+.word 0
+.word 0
+.word 0
+.text
+START:
+#mov R0, 1
+#shl R0, 13
+#or PSW, R0
+
+mov R0, 1
+shl R0, 15
+or PSW, R0
+
+call &main
+exit:mov r0, 1
+     shl r0, 14
+     not r0, r0
+     mov psw, r0
+
+timer:
+    push r4
+    mov r4, current_time
+    add r4, 1
+    mov current_time, r4
+    pop r4
+    iret
+
+printstr:
+    push R1
+    push R2
+psl:mov R1, R0[0]
+    jmpeq &printstr_end
+    mov R2, $screen
+    mov R2[0], R1
+    add R0, 1
+    jmp &psl
+
+printstr_end:   pop r2
+                pop r1
+                ret
+
+kbd: push r0
+     push r1
+     push r2
+     push r3
+
+     mov r0, 1
+     mov kbd_present, r0
+     mov r0, kbd_reg
+     mov r0, r0[0]
+     mov kbd_hold, r0
+kbd_end:pop r3
+        pop r2
+        pop r1
+        pop r0
+        iret
+
+getchar:    mov r0, kbd_present
+            jmpeq &getchar
+            mov r0, 0
+            mov kbd_present, r0
+            mov r0, kbd_hold
+            mov R2, screen
+            mov R2[0], R0
+            ret
+
+getstr:     mov R0, 0
+            mov $kbd_buff_size, R0
+getstr_lp:  call &getchar
+            cmp R0, 10
+            jmpeq &getstr_end
+            mov R1, kbd_buff_size
+            mov R1[kbd_buff], R0
+            add R1, 1
+            mov kbd_buff_size, R1
+            cmp R1, 79
+            jmpeq &getstr_end
+            jmp &getstr_lp
+getstr_end: mov R1, kbd_buff_size
+            mov R2, 0
+            mov R1[kbd_buff], R2
+            mov R0, &kbd_buff
+            ret
+
+getint:     mov R0, 0
+            mov kbd_num, R0
+            mov R0, 1
+            mov kbd_coeff, R0
+getint_lp:  call &getchar
+            cmp R0, 10
+            jmpeq &getint_end
+            cmp R0, 45
+            jmpeq &getint_rev
+            sub R0, 48
+            mov R1, kbd_num
+            mul R1, 10
+            add R1, R0
+            mov kbd_num, R1
+            jmp &getint_lp
+getint_rev: mov R0, kbd_coeff
+            mul R0, -1
+            mov kbd_coeff, R0
+            jmp &getint_lp
+getint_end: mov R0, kbd_num
+            mov R1, kbd_coeff
+            mul R0, R1
+            ret
+
+printint: cmp 0, R0
+          jmpeq &printint_spec
+          jmpgt &printint_neg
+          mov R1, &printint_buff_end
+          sub R1, 2
+          mov R2, 0
+          mov R1[0], R2
+printint_lp: mov R3, R0
+          div R3, 10
+          mul R3, 10
+          sub R3, R0
+          mul R3, -1
+          add R3, 48
+          sub R1, 2
+          mov R1[0], R3
+          div R0, 10
+          cmp R0, 0
+          jmpgt &printint_lp
+printint_end: mov R0, R1
+              call &printstr
+              ret
+printint_neg: mov R1, &printint_buff_end
+              sub R1, 2
+              mov R2, 0
+              mov R1[0], R2
+              sub R1, 2
+              mov R2, 45
+              mov R1[0], R2
+              mul r0, -1
+              push r0
+              mov r0, r1
+              call &printstr
+              pop r0
+              jmp &printint
+
+printint_spec:  mov R1, &printint_buff_end
+                mov R0, 0
+                sub R1, 2
+                mov R1[0], R0
+                sub R1, 2
+                mov R0, 48
+                mov R1[0], R0
+                mov R0, R1
+                call &printstr
+                ret
+
+println: mov R0, &newline
+         call &printstr
+         ret
+
+badinst: mov R0, &badinst_message
+         call &printstr
+         mov R0, SP[2]
+         call &printint
+         call &println
+         jmp $exit
+
+.data
+current_time: .long 0
+screen: .word 0xfffe
+kbd_reg: .word 0xfffc
+kbd_hold: .word 0
+kbd_present: .word 0
+newline: .word 10
+         .word 0
+
+badinst_message:.word 72
+                .word 65
+                .word 76
+                .word 84
+                .word 73
+                .word 78
+                .word 71
+                .word 32
+                .word 65
+                .word 84
+                .word 32
+                .word 66
+                .word 65
+                .word 68
+                .word 32
+                .word 73
+                .word 78
+                .word 83
+                .word 84
+                .word 82
+                .word 85
+                .word 67
+                .word 84
+                .word 73
+                .word 79
+                .word 78
+                .word 32
+                .word 78
+                .word 69
+                .word 65
+                .word 82
+                .word 32
+                .word 80
+                .word 67
+                .word 61
+                .word 0
+
+
+.bss
+kbd_buff:.skip 80
+kbd_buff_size: .word 0
+kbd_num: .word 0
+kbd_coeff: .word 1
+printint_buff: .skip 40
+printint_buff_end:

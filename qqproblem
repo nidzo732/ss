@@ -1,0 +1,5 @@
+.global gl
+.global START
+.text
+START:
+l1: add R0, $gl

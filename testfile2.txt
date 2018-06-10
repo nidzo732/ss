@@ -1,0 +1,26 @@
+.global funkcija
+.global fibonacci
+.text
+funkcija:
+    add r0, 1
+    sub r1, 1
+    callne &funkcija
+    ret
+
+fibonacci:
+    cmp 2,r0
+    jmpgt &fibo_spec_end
+    push r0
+    sub r0, 1
+    call &fibonacci
+    mov r2, r0
+    pop r0
+    push r2
+    sub r0, 2
+    call &fibonacci
+    pop r2
+    add r0, r2
+    ret
+fibo_spec_end:
+    mov r0, 1
+    ret

@@ -1,0 +1,10 @@
+START: 40000
+SYMBOLS:
+#         Name            Section         Offset          Length          Visibility
+0         .data           .data           40000           2               LOCAL
+1         gl              .data           40000           0               GLOBAL
+RELTAB:
+Name            Section         Offset          TYPE      
+CODE:
+.data
+07 00 

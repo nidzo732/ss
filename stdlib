@@ -1,0 +1,147 @@
+START: 0
+SYMBOLS:
+#         Name            Section         Offset          Length          Visibility
+0         .rodata         .rodata         0               32              LOCAL
+1         .text           .text           32              490             LOCAL
+2         START           .text           32              0               GLOBAL
+3         exit            .text           46              0               GLOBAL
+4         timer           .text           58              0               LOCAL
+5         printstr        .text           76              0               GLOBAL
+6         psl             .text           80              0               LOCAL
+7         printstr_end    .text           104             0               LOCAL
+8         kbd             .text           110             0               LOCAL
+9         kbd_end         .text           138             0               LOCAL
+10        getchar         .text           148             0               GLOBAL
+11        getstr          .text           178             0               GLOBAL
+12        getstr_lp       .text           186             0               LOCAL
+13        getstr_end      .text           226             0               LOCAL
+14        getint          .text           244             0               GLOBAL
+15        getint_lp       .text           260             0               LOCAL
+16        getint_rev      .text           302             0               LOCAL
+17        getint_end      .text           318             0               LOCAL
+18        printint        .text           330             0               GLOBAL
+19        printint_lp     .text           358             0               LOCAL
+20        printint_end    .text           398             0               LOCAL
+21        printint_neg    .text           406             0               LOCAL
+22        printint_spec   .text           452             0               LOCAL
+23        println         .text           488             0               GLOBAL
+24        badinst         .text           498             0               LOCAL
+25        .data           .data           522             88              LOCAL
+26        current_time    .data           522             0               GLOBAL
+27        screen          .data           526             0               LOCAL
+28        kbd_reg         .data           528             0               LOCAL
+29        kbd_hold        .data           530             0               LOCAL
+30        kbd_present     .data           532             0               LOCAL
+31        newline         .data           534             0               LOCAL
+32        badinst_message .data           538             0               LOCAL
+33        .bss            .bss            610             126             LOCAL
+34        kbd_buff        .bss            610             0               LOCAL
+35        kbd_buff_size   .bss            690             0               LOCAL
+36        kbd_num         .bss            692             0               LOCAL
+37        kbd_coeff       .bss            694             0               LOCAL
+38        printint_buff   .bss            696             0               LOCAL
+39        printint_buff_end.bss            736             0               LOCAL
+40        main            UNKNOWN         0               0               GLOBAL
+RELTAB:
+Name            Section         Offset          TYPE      
+.text           .rodata         2               ABS2      
+.text           .rodata         4               ABS2      
+.text           .rodata         6               ABS2      
+main            .text           44              ABS2      
+current_time    .text           62              ABS2      
+current_time    .text           70              ABS2      
+.text           .text           86              ABS2      
+.data           .text           90              REL2      
+.text           .text           102             ABS2      
+.data           .text           124             ABS2      
+.data           .text           128             ABS2      
+.data           .text           136             ABS2      
+.data           .text           150             ABS2      
+getchar         .text           154             ABS2      
+.data           .text           162             ABS2      
+.data           .text           166             ABS2      
+.data           .text           170             ABS2      
+.bss            .text           184             REL2      
+getchar         .text           188             ABS2      
+.text           .text           196             ABS2      
+.bss            .text           200             ABS2      
+.bss            .text           204             ABS2      
+.bss            .text           212             ABS2      
+.text           .text           220             ABS2      
+.text           .text           224             ABS2      
+.bss            .text           228             ABS2      
+.bss            .text           236             ABS2      
+.bss            .text           240             ABS2      
+.bss            .text           250             ABS2      
+.bss            .text           258             ABS2      
+getchar         .text           262             ABS2      
+.text           .text           270             ABS2      
+.text           .text           278             ABS2      
+.bss            .text           286             ABS2      
+.bss            .text           296             ABS2      
+.text           .text           300             ABS2      
+.bss            .text           304             ABS2      
+.bss            .text           312             ABS2      
+.text           .text           316             ABS2      
+.bss            .text           320             ABS2      
+.bss            .text           324             ABS2      
+.text           .text           336             ABS2      
+.text           .text           340             ABS2      
+.bss            .text           344             ABS2      
+.text           .text           396             ABS2      
+printstr        .text           402             ABS2      
+.bss            .text           408             ABS2      
+printstr        .text           444             ABS2      
+printint        .text           450             ABS2      
+.bss            .text           454             ABS2      
+printstr        .text           484             ABS2      
+.data           .text           490             ABS2      
+printstr        .text           494             ABS2      
+.data           .text           500             ABS2      
+printstr        .text           504             ABS2      
+printint        .text           512             ABS2      
+println         .text           516             ABS2      
+exit            .text           520             REL2      
+CODE:
+.rodata
+00 00 3a 00 f2 01 6e 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+.text
+f5 00 01 00 f9 00 0f 00 d8 e8 ec 07 00 00 f5 00 
+01 00 f9 00 0e 00 dd 08 f4 e8 e5 87 f5 90 00 00 
+c1 80 01 00 f6 0c 00 00 e9 87 f0 e7 e5 27 e5 47 
+f5 38 00 00 35 e0 68 00 f5 5f b2 01 f7 49 00 00 
+c1 00 01 00 f5 e0 50 00 e9 47 e9 27 e9 e7 e5 07 
+e5 27 e5 47 e5 67 f5 00 01 00 f6 08 14 02 f5 10 
+10 02 f5 18 00 00 f6 08 12 02 e9 67 e9 47 e9 27 
+e9 07 f0 e7 f5 10 14 02 35 e0 00 00 f5 00 00 00 
+f6 08 14 02 f5 10 12 02 f5 50 0e 02 f7 48 00 00 
+e9 e7 f5 00 00 00 f7 e8 f8 01 ec 07 00 00 d1 00 
+0a 00 35 e0 e2 00 f5 30 b2 02 f7 28 62 02 c1 20 
+01 00 f6 09 b2 02 d1 20 4f 00 35 e0 e2 00 f5 e0 
+ba 00 f5 30 b2 02 f5 40 00 00 f7 2a 62 02 f5 00 
+62 02 e9 e7 f5 00 00 00 f6 08 b4 02 f5 00 01 00 
+f6 08 b6 02 ec 07 00 00 d1 00 0a 00 35 e0 3e 01 
+d1 00 2d 00 35 e0 2e 01 c5 00 30 00 f5 30 b4 02 
+c9 20 0a 00 c1 28 f6 09 b4 02 f5 e0 04 01 f5 10 
+b6 02 c9 00 ff ff f6 08 b6 02 f5 e0 04 01 f5 10 
+b4 02 f5 30 b6 02 c9 09 e9 e7 d0 08 00 00 35 e0 
+c4 01 b5 e0 96 01 f5 20 e0 02 c5 20 02 00 f5 40 
+00 00 f7 2a 00 00 f5 68 cd 60 0a 00 c9 60 0a 00 
+c5 68 c9 60 ff ff c1 60 30 00 c5 20 02 00 f7 2b 
+00 00 cd 00 0a 00 d1 00 00 00 b5 e0 66 01 f5 09 
+ec 07 00 00 e9 e7 f5 20 e0 02 c5 20 02 00 f5 40 
+00 00 f7 2a 00 00 c5 20 02 00 f5 40 2d 00 f7 2a 
+00 00 c9 00 ff ff e5 07 f5 09 ec 07 00 00 e9 07 
+f5 e0 00 00 f5 20 e0 02 f5 00 00 00 c5 20 02 00 
+f7 28 00 00 c5 20 02 00 f5 00 30 00 f7 28 00 00 
+f5 09 ec 07 00 00 e9 e7 f5 00 16 02 ec 07 00 00 
+e9 e7 f5 00 1a 02 ec 07 00 00 f5 1e 02 00 ec 07 
+00 00 ec 07 00 00 c1 e0 fe ff 
+.data
+00 00 00 00 fe ff fc ff 00 00 00 00 0a 00 00 00 
+48 00 41 00 4c 00 54 00 49 00 4e 00 47 00 20 00 
+41 00 54 00 20 00 42 00 41 00 44 00 20 00 49 00 
+4e 00 53 00 54 00 52 00 55 00 43 00 54 00 49 00 
+4f 00 4e 00 20 00 4e 00 45 00 41 00 52 00 20 00 
+50 00 43 00 3d 00 00 00 

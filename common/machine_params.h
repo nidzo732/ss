@@ -1,0 +1,20 @@
+//
+// Created by nidzo on 21.5.18..
+//
+
+#ifndef SS_MACHINE_PARAMS_H
+#define SS_MACHINE_PARAMS_H
+
+#define NO_OF_REGISTERS 8
+#define PC_REGISTER 7
+#define SP_REGISTER 6
+#define PSW_REGISTER (NO_OF_REGISTERS)
+#define MEMORY_SIZE 65536
+#define IO_SEGMENT_SIZE 128
+#define IO_SEGMENT_START (MEMORY_SIZE-IO_SEGMENT_SIZE)
+#define MAX_PROGRAM_SIZE (MEMORY_SIZE-IO_SEGMENT_SIZE)
+#define WORD_SIZE 2
+#define IVT_SIZE 16
+#define SCREEN_OUT 0xfffe
+#define KBD_IN 0xfffc
+#endif //SS_MACHINE_PARAMS_H
