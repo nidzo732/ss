@@ -11,14 +11,14 @@
 .global println
 .text
 main:
-    call &getint
+    call $getint
     mul R0, 2
     mov arrs, R0
     mov R1, 0
 lp: cmp r1, arrs
     jmpeq $srt
     push r1
-    call &getint
+    call $getint
     pop r1
     mov r1[array], r0
     add r1,2
@@ -42,15 +42,15 @@ slp2_cnt: add R1, 2
 slp2_end: add R0, 2
           jmp $slp1
 
-printarr:call &println
-         call &println
+printarr:call $println
+         call $println
 mov R1, 0
 lp2: cmp r1, arrs
      jmpeq $exit
      mov r0, r1[array]
      push r1
-     call &printint
-     call &println
+     call $printint
+     call $println
      pop r1
      add r1, 2
      jmp $lp2
@@ -58,4 +58,3 @@ lp2: cmp r1, arrs
 .data
 array: .skip 200
 arrs: .word 0
-.char 1000

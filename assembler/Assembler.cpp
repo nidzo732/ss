@@ -769,8 +769,22 @@ bool Assembler::jmpInstructionHandler(Assembler &assembler, const Line &line,
     }
     else
     {
+        auto arg=line.getArg0();
+        if(arg.getType()==Operand::OperandType::MEMDIR)
+        {
+            arg=Operand(std::to_string(arg.getNumericValue()));
+        }
+        else if(arg.getType()==Operand::OperandType::SYMB)
+        {
+            arg=Operand("&"+arg.getSymbol());
+        }
+        else if(arg.getType()!=Operand::OperandType::SYMB_VAL)
+        {
+            assembler.emmitError("Unsupported operand type for JMP");
+            return false;
+        }
         return binaryInstructionHandler(assembler, Line("mov pc, " +
-                                                        line.getArg0().getValue(),
+                                                        arg.getValue(),
                                                         line.getNumber()),
                                         firstPass);
     }
@@ -788,7 +802,14 @@ bool Assembler::putSymbol(std::string symbol, bool relative, uint16_t location,
         if (relative)
         {
             relType = "REL" + std::to_string(length);
-            insertedValue = -2;
+            if(symb.getSection()==currentSection)
+            {
+                insertedValue = symb.getOffset() - location - 2;
+            }
+            else
+            {
+                insertedValue=-2;
+            }
         }
         else
         {
@@ -802,11 +823,6 @@ bool Assembler::putSymbol(std::string symbol, bool relative, uint16_t location,
         if (relative)
         {
             relType = "REL" + std::to_string(length);
-            if(symb.getOffset()-location-2<INT16_MIN || symb.getOffset()-location-2>INT16_MAX)
-            {
-                emmitError("Could not fit offset into 16 bits");
-                return false;
-            }
             insertedValue = symb.getOffset() - location - 2;
         }
         else
@@ -815,7 +831,7 @@ bool Assembler::putSymbol(std::string symbol, bool relative, uint16_t location,
             relType = "ABS" + std::to_string(length);
         }
     }
-    if (!(relative && symb.getSection() == currentSection) || symb.isGlobal())
+    if (!(relative && symb.getSection() == currentSection))
     {
         relocations.push_back(
                 RelocationEntry(location, targetSymbol, relType, currentSection));

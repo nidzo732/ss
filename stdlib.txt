@@ -9,7 +9,7 @@
 .global printint
 .global println
 .rodata
-.word 0
+.word progstart
 .word timer
 .word badinst
 .word kbd
@@ -27,15 +27,15 @@
 .word 0
 .text
 START:
-#mov R0, 1
-#shl R0, 13
-#or PSW, R0
+mov R0, 1
+shl R0, 13
+or PSW, R0
 
 mov R0, 1
 shl R0, 15
 or PSW, R0
 
-call &main
+call $main
 exit:mov r0, 1
      shl r0, 14
      not r0, r0
@@ -90,7 +90,7 @@ getchar:    mov r0, kbd_present
 
 getstr:     mov R0, 0
             mov $kbd_buff_size, R0
-getstr_lp:  call &getchar
+getstr_lp:  call $getchar
             cmp R0, 10
             jmpeq &getstr_end
             mov R1, kbd_buff_size
@@ -110,7 +110,7 @@ getint:     mov R0, 0
             mov kbd_num, R0
             mov R0, 1
             mov kbd_coeff, R0
-getint_lp:  call &getchar
+getint_lp:  call $getchar
             cmp R0, 10
             jmpeq &getint_end
             cmp R0, 45
@@ -149,7 +149,7 @@ printint_lp: mov R3, R0
           cmp R0, 0
           jmpgt &printint_lp
 printint_end: mov R0, R1
-              call &printstr
+              call $printstr
               ret
 printint_neg: mov R1, &printint_buff_end
               sub R1, 2
@@ -161,7 +161,7 @@ printint_neg: mov R1, &printint_buff_end
               mul r0, -1
               push r0
               mov r0, r1
-              call &printstr
+              call $printstr
               pop r0
               jmp &printint
 
@@ -173,19 +173,22 @@ printint_spec:  mov R1, &printint_buff_end
                 mov R0, 48
                 mov R1[0], R0
                 mov R0, R1
-                call &printstr
+                call $printstr
                 ret
 
 println: mov R0, &newline
-         call &printstr
+         call $printstr
          ret
 
 badinst: mov R0, &badinst_message
-         call &printstr
+         call $printstr
          mov R0, SP[2]
-         call &printint
-         call &println
+         call $printint
+         call $println
          jmp $exit
+progstart: mov R0, &progstart_message
+           call $printstr
+           iret
 
 .data
 current_time: .long 0
@@ -232,6 +235,25 @@ badinst_message:.word 72
                 .word 67
                 .word 61
                 .word 0
+
+progstart_message:  .word 80
+                    .word 82
+                    .word 79
+                    .word 71
+                    .word 82
+                    .word 65
+                    .word 77
+                    .word 32
+                    .word 83
+                    .word 84
+                    .word 65
+                    .word 82
+                    .word 84
+                    .word 69
+                    .word 68
+                    .word 16
+                    .word 16
+                    .word 0
 
 
 .bss

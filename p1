@@ -1,13 +1,13 @@
-START: 16
+START: 38000
 SYMBOLS:
 #         Name            Section         Offset          Length          Visibility
-0         .text           .text           16              4               LOCAL
-1         START           .text           16              0               GLOBAL
-2         l1              .text           16              0               LOCAL
+0         .text           .text           38000           4               LOCAL
+1         START           .text           38000           0               GLOBAL
+2         l1              .text           38000           0               LOCAL
 3         gl              UNKNOWN         0               0               GLOBAL
 RELTAB:
 Name            Section         Offset          TYPE      
-gl              .text           18              REL2      
+gl              .text           38002           REL2      
 CODE:
 .text
 c1 1f fe ff 

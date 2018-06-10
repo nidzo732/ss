@@ -202,12 +202,6 @@ bool File::relocate(const RelocationEntry &entry, const Symbol &target, int32_t 
     {
         if(target.isGlobal())
         {
-            if(target.getOffset()-(location+start+fileDelta)>INT16_MAX || target.getOffset()-(location+start+fileDelta)<INT16_MIN)
-            {
-                std::cerr<<"PC-relative offsets been truncated during relocation\n";
-                std::cerr<<"Relocation failed\n";
-                return false;
-            }
             val+=target.getOffset()-(location+start+fileDelta);
         }
     }

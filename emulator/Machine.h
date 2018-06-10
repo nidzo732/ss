@@ -33,10 +33,13 @@ protected:
 
     bool storeResult(Instruction::OperandType type, unsigned value, uint16_t secondWord, int32_t result);
     bool storeResult(Instruction::OperandType type, unsigned value, uint16_t secondWord, int16_t result);
-    bool fetchArgument(Instruction::OperandType type, unsigned value, uint16_t secondWord, int16_t &argument);
+    bool fetchArgument(Instruction::OperandType type, unsigned value, uint16_t secondWord, int16_t &argument, bool useEffectiveAddress=false);
     bool interrupt(int id);
     bool memWrite(uint16_t address, uint16_t value);
     volatile bool running;
+    bool interruptSignals[16];
+    bool notifyInterrupt(int id);
+    void handleInterrupts();
 
     bool pop(uint16_t& value);
     bool push(uint16_t value);

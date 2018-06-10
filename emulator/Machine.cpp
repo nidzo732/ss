@@ -15,6 +15,7 @@ Machine::Machine()
     registers[SP_REGISTER] = IO_SEGMENT_START+1;
     registers[PSW_REGISTER] = 1u << 14u;
     registers[PC_REGISTER] = 32;
+    for(int i=0;i<16;i++) interruptSignals[i]=false;
     running=false;
 }
 
@@ -57,13 +58,13 @@ bool Machine::run()
 
     std::thread timer(Machine::periodicInterrupt, this);
     std::thread kbd(Machine::inputReader, this);
+    interrupt(0);
     while (registers[PSW_REGISTER] & (1u << 14u))
     {
+        handleInterrupts();
         if (!step())
         {
-            uint16_t badInstructionInterrupt;
-            memory.read(4, badInstructionInterrupt);
-            if(badInstructionInterrupt!=0) interrupt(2);
+            if(interrupt(2)) continue;
             else
             {
                 std::cerr<<"Bad instruction hit at "<<registers[PC_REGISTER]<<"(-2 or -4), no interupt defined, halting";
@@ -153,15 +154,25 @@ bool Machine::storeResult(Instruction::OperandType type, unsigned value,
     }
 }
 bool Machine::fetchArgument(Instruction::OperandType type, unsigned value,
-                            uint16_t secondWord, int16_t &argument)
+                            uint16_t secondWord, int16_t &argument, bool useEffectiveAddress)
 {
     switch (type)
     {
         case Instruction::OperandType::REGIND:
             if (value > NO_OF_REGISTERS) return false;
-            return memory.read(secondWord + registers[value], (uint16_t&)argument);
+            if(useEffectiveAddress)
+            {
+                argument=secondWord + registers[value];
+                return true;
+            }
+            else return memory.read(secondWord + registers[value], (uint16_t&)argument);
         case Instruction::OperandType::MEMDIR:
-            return memory.read(secondWord, (uint16_t&)argument);
+            if(useEffectiveAddress)
+            {
+                argument=secondWord;
+                return true;
+            }
+            else return memory.read(secondWord, (uint16_t&)argument);
         case Instruction::OperandType::ABS:
             argument = secondWord;
             return true;
@@ -360,7 +371,7 @@ bool Machine::popExecutor(Machine &machine, Instruction &instruction)
 bool Machine::callExecutor(Machine &machine, Instruction &instruction)
 {
     int16_t arg1;
-    if(!machine.fetchArgument(instruction.getType1(), instruction.getValue1(), instruction.getSecondWord(), arg1))
+    if(!machine.fetchArgument(instruction.getType1(), instruction.getValue1(), instruction.getSecondWord(), arg1, true))
     {
         return false;
     }
@@ -519,7 +530,7 @@ void Machine::periodicInterrupt(Machine *machine)
             if(machine->registers[PSW_REGISTER]&(1<<13))
             {
 
-                machine->interrupt(1);
+                machine->notifyInterrupt(1);
             }
         }
     }
@@ -528,17 +539,14 @@ void Machine::periodicInterrupt(Machine *machine)
 bool Machine::interrupt(int id)
 {
     if(id>15) return false;
-    if(registers[PSW_REGISTER]&(1<<15))
-    {
-        push(registers[PC_REGISTER]);
-        push(registers[PSW_REGISTER]);
-        registers[PSW_REGISTER]&=~(1<<15);
-        uint16_t addr;
-        memory.read(id*2, addr);
-        registers[PC_REGISTER]=addr;
-        return true;
-    }
-    return false;
+    push(registers[PC_REGISTER]);
+    push(registers[PSW_REGISTER]);
+    registers[PSW_REGISTER]&=~(1<<15);
+    uint16_t addr;
+    memory.read(id*2, addr);
+    if(addr==0) return false;
+    registers[PC_REGISTER]=addr;
+    return true;
 }
 
 bool Machine::memWrite(uint16_t address, uint16_t value)
@@ -570,7 +578,7 @@ void Machine::inputReader(Machine *machine)
         char val = getchar();
         {
             machine->mtx.lock();
-            while (!machine->interrupt(3))
+            while (!machine->notifyInterrupt(3))
             {
                 machine->mtx.unlock();
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -578,6 +586,34 @@ void Machine::inputReader(Machine *machine)
             }
             machine->memory.write(KBD_IN, (uint8_t)val);
             machine->mtx.unlock();
+        }
+    }
+}
+
+bool Machine::notifyInterrupt(int id)
+{
+    std::lock_guard<std::recursive_mutex> lck(mtx);
+    if(id>15) return false;
+    bool old=interruptSignals[id];
+    interruptSignals[id]=true;
+    return !old;
+}
+
+void Machine::handleInterrupts()
+{
+    std::lock_guard<std::recursive_mutex> lck(mtx);
+    if(registers[PSW_REGISTER]&(1<<15))
+    {
+        for (int i = 0; i < 16; i++)
+        {
+            if (interruptSignals[i])
+            {
+                if (interrupt(i))
+                {
+                    interruptSignals[i] = false;
+                    break;
+                }
+            }
         }
     }
 }

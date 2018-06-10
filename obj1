@@ -11,7 +11,7 @@ SYMBOLS:
 7         slp2_end        .text           1124            0               LOCAL
 8         printarr        .text           1132            0               LOCAL
 9         lp2             .text           1144            0               LOCAL
-10        .data           .data           1176            207             LOCAL
+10        .data           .data           1176            202             LOCAL
 11        array           .data           1176            0               LOCAL
 12        arrs            .data           1376            0               LOCAL
 13        funkcija        UNKNOWN         0               0               GLOBAL
@@ -26,10 +26,10 @@ SYMBOLS:
 22        println         UNKNOWN         0               0               GLOBAL
 RELTAB:
 Name            Section         Offset          TYPE      
-getint          .text           1026            ABS2      
+getint          .text           1026            REL2      
 .data           .text           1034            ABS2      
 .data           .text           1042            ABS2      
-getint          .text           1052            ABS2      
+getint          .text           1052            REL2      
 .data           .text           1058            ABS2      
 .data           .text           1074            ABS2      
 .data           .text           1088            ABS2      
@@ -37,36 +37,36 @@ getint          .text           1052            ABS2
 .data           .text           1100            ABS2      
 .data           .text           1110            ABS2      
 .data           .text           1114            ABS2      
-println         .text           1134            ABS2      
-println         .text           1138            ABS2      
+println         .text           1134            REL2      
+println         .text           1138            REL2      
 .data           .text           1146            ABS2      
 exit            .text           1150            REL2      
 .data           .text           1154            ABS2      
-printint        .text           1160            ABS2      
-println         .text           1164            ABS2      
+printint        .text           1160            REL2      
+println         .text           1164            REL2      
 CODE:
 .text
-ec 07 00 00 c9 00 02 00 f6 08 60 05 f5 20 00 00 
-d1 30 60 05 01 e0 14 00 e5 27 ec 07 00 00 e9 27 
+ef e7 fe ff c9 00 02 00 f6 08 60 05 f5 20 00 00 
+d1 30 60 05 01 e0 14 00 e5 27 ef e7 fe ff e9 27 
 f7 28 98 04 c1 20 02 00 c1 e0 e4 ff f5 00 00 00 
 d1 10 60 05 01 e0 34 00 f5 28 c1 20 02 00 d1 30 
 60 05 01 e0 1e 00 f5 58 98 04 f5 79 98 04 d1 6a 
 81 e0 08 00 f7 0b 98 04 f7 2a 98 04 c1 20 02 00 
-c1 e0 da ff c1 00 02 00 c1 e0 c4 ff ec 07 00 00 
-ec 07 00 00 f5 20 00 00 d1 30 60 05 01 e0 fe ff 
-f5 19 98 04 e5 27 ec 07 00 00 ec 07 00 00 e9 27 
+c1 e0 da ff c1 00 02 00 c1 e0 c4 ff ef e7 fe ff 
+ef e7 fe ff f5 20 00 00 d1 30 60 05 01 e0 fe ff 
+f5 19 98 04 e5 27 ef e7 fe ff ef e7 fe ff e9 27 
 c1 20 02 00 c1 e0 e0 ff 
 .data
-00 00 00 00 00 00 00 00 b0 00 00 00 00 00 00 00 
-d0 00 00 00 00 00 00 00 40 6b bc e5 ff 7f 00 00 
-4d 6b bc e5 ff 7f 00 00 01 00 00 00 00 00 00 00 
-4d 6b bc e5 ff 7f 00 00 4d 6b bc e5 ff 7f 00 00 
-00 00 00 00 00 00 00 00 40 6b bc e5 ff 7f 00 00 
-43 6b bc e5 ff 7f 00 00 01 00 00 00 00 00 00 00 
-43 6b bc e5 ff 7f 00 00 46 6b bc e5 ff 7f 00 00 
-01 00 00 00 00 00 00 00 46 6b bc e5 ff 7f 00 00 
-4d 6b bc e5 ff 7f 00 00 01 00 00 00 00 00 00 00 
-4d 6b bc e5 ff 7f 00 00 4d 6b bc e5 ff 7f 00 00 
-00 00 00 00 00 00 00 00 40 6b bc e5 ff 7f 00 00 
-40 6b bc e5 ff 7f 00 00 00 00 00 00 00 00 00 00 
-4d 6b bc e5 ff 7f 00 00 00 00 e8 c1 00 80 38 
+91 02 00 00 00 00 00 00 78 2b c5 f7 1a 7f 00 00 
+78 2b c5 f7 1a 7f 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 fd 7f 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 fd 7f 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 1a 7f 00 00 00 00 
