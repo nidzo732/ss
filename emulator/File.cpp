@@ -174,6 +174,7 @@ bool File::relocate(std::unordered_map<std::string, Symbol> &globalSymbols, int3
 bool File::relocate(const RelocationEntry &entry, const Symbol &target, int32_t fileDelta)
 {
     if(!sections.count(entry.getSection())) return false;
+    if(entry.getSection()==".bss") return true;
     auto &section=sections[entry.getSection()];
     if(entry.getOffset()<section.getOffset() || entry.getOffset()>=section.getOffset()+section.getLength()) return false;
     int location=entry.getOffset()+fileDelta-start;

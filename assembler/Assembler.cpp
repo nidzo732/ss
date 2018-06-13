@@ -1032,6 +1032,7 @@ void Assembler::outputRelocationTable(std::ostream &stream)
     auto flags = stream.flags();
     for (auto &rel:relocations)
     {
+        if(rel.getSection()==".bss") continue;
         stream << std::setw(16) << std::left;
         stream << rel.getTargetSymbol();
         stream << std::setw(16) << std::left;

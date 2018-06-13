@@ -36,7 +36,7 @@ SYMBOLS:
 32        newline         .data           554             0               LOCAL
 33        badinst_message .data           558             0               LOCAL
 34        progstart_message.data           630             0               LOCAL
-35        .bss            .bss            666             126             LOCAL
+35        .bss            .bss            666             128             LOCAL
 36        kbd_buff        .bss            666             0               LOCAL
 37        kbd_buff_size   .bss            746             0               LOCAL
 38        kbd_num         .bss            748             0               LOCAL

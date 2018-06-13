@@ -263,3 +263,4 @@ kbd_num: .word 0
 kbd_coeff: .word 1
 printint_buff: .skip 40
 printint_buff_end:
+.word kbd_buff
