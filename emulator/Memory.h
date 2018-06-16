@@ -18,11 +18,17 @@ public:
 
     bool read(uint16_t address, uint16_t &data);
     bool blkwrite(uint16_t start, uint16_t end, const std::vector<uint8_t> &data);
+
+    volatile bool isKbdInOk() const;
+
+    volatile void setKbdInOk(bool kbdInOk);
+
 protected:
     std::vector<uint8_t> readBits;
     std::vector<uint8_t> writeBits;
     std::vector<uint8_t> executeBits;
     std::vector<uint8_t> memory;
+    volatile bool kbdInOk;
 };
 
 

@@ -17,6 +17,7 @@ Machine::Machine()
     registers[PC_REGISTER] = 32;
     for(int i=0;i<16;i++) interruptSignals[i]=false;
     running=false;
+    memory.write(KBD_IN, (uint8_t)0xff);
 }
 
 bool Machine::setRegister(uint16_t reg, uint16_t val)
@@ -36,6 +37,7 @@ bool Machine::getRegister(uint16_t reg, uint16_t &val)
 bool Machine::step()
 {
     std::lock_guard<std::recursive_mutex> lck(mtx);
+    handleInterrupts();
     Instruction ins;
     //std::cout<<registers[PC_REGISTER];
     if (!fetch(ins)) return false;
@@ -61,7 +63,6 @@ bool Machine::run()
     interrupt(0);
     while (registers[PSW_REGISTER] & (1u << 14u))
     {
-        handleInterrupts();
         if (!step())
         {
             if(interrupt(2)) continue;
@@ -575,17 +576,20 @@ void Machine::inputReader(Machine *machine)
 {
     while(true)
     {
-        char val = getchar();
+        int val = getchar();
         {
+            if(val==EOF) break;
             machine->mtx.lock();
-            while (!machine->notifyInterrupt(3))
+            while (!machine->memory.isKbdInOk() || !machine->notifyInterrupt(3))
             {
                 machine->mtx.unlock();
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 machine->mtx.lock();
             }
+            machine->memory.setKbdInOk(false);
             machine->memory.write(KBD_IN, (uint8_t)val);
             machine->mtx.unlock();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
 }

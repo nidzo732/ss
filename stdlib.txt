@@ -56,7 +56,7 @@ psl:mov R1, R0[0]
     jmpeq &printstr_end
     mov R2, $screen
     mov R2[0], R1
-    add R0, 1
+    add R0, 2
     jmp &psl
 
 printstr_end:   pop r2

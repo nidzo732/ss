@@ -15,6 +15,7 @@ Memory::Memory()
 bool Memory::write(uint16_t address, uint8_t data)
 {
     memory[address]=data;
+    kbdInOk=true;
     return true;
 }
 
@@ -30,6 +31,7 @@ bool Memory::read(uint16_t address, uint16_t &data)
     data=memory[address+1];
     data<<=8u;
     data|=memory[address];
+    if(address==KBD_IN) kbdInOk=true;
     return true;
 }
 
@@ -38,6 +40,16 @@ bool Memory::blkwrite(uint16_t start, uint16_t end, const std::vector<uint8_t> &
     if(start>end) return false;
     std::copy(data.begin(), data.end(), memory.begin()+start);
     return false;
+}
+
+volatile bool Memory::isKbdInOk() const
+{
+    return kbdInOk;
+}
+
+volatile void Memory::setKbdInOk(bool kbdInOk)
+{
+    Memory::kbdInOk = kbdInOk;
 }
 
 

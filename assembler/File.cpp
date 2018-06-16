@@ -3,7 +3,6 @@
 //
 
 #include "File.h"
-#include "../emulator/File.h"
 
 File::File(std::ifstream &inputStream, std::string fileName)
 {
